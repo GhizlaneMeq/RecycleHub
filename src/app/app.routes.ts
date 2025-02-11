@@ -1,31 +1,24 @@
 import { Routes } from '@angular/router';
+import { HomeComponent } from "./pages/home/home.component";
+import { RegisterComponent } from './components/register/register.component';
+import { ProfileComponent } from './pages/profile/profile/profile.component';
+import { RequestFormComponent } from './pages/request-form/request-form/request-form.component';
+import { RequestListComponent } from './pages/request-list/request-list/request-list.component';
+import { RequestUpdateComponent } from './pages/request-update/request-update/request-update.component';
+import { CollectorRequestListComponent } from './pages/collector-request-list/collector-request-list/collector-request-list.component';
 import { LoginComponent } from './components/login/login.component';
-import { SignupComponent } from './components/signup/signup.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { HomeComponent } from './components/home/home.component';
-import { authGuard } from './guards/auth.guard';
-import { redirectIfAuthenticateGuard } from './guards/redirect-if-authenticate.guard';
-import { CollectionRequestComponent } from './components/collection-request/collection-request.component';
-import { ProfileComponent } from './components/profile/profile.component';
-import { CollectorComponent } from './components/collector/collector.component';
-import { collectorGuard } from './guards/collector.guard';
-import { PointsComponent } from './components/points/points.component';
+import { noAuthGuard } from './core/guards/no-auth.guard';
+import { authGuard } from './core/guards/auth.guard';
+import { CollectorGuard } from './core/guards/collector.guard';
 
 export const routes: Routes = [
-
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-
-  { path: 'login', component: LoginComponent  , canActivate: [redirectIfAuthenticateGuard] },
-  { path: 'signup', component: SignupComponent , canActivate: [redirectIfAuthenticateGuard] },
-
-
-  { path: 'points', component: PointsComponent, canActivate: [authGuard]},
-  { path: 'dashboard', component: DashboardComponent , canActivate: [authGuard]},
-  { path: 'home', component: HomeComponent , canActivate: [authGuard]},
-  { path: 'collection-request', component: CollectionRequestComponent , canActivate: [authGuard]},
-  { path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
-
-
-  { path: 'collector', component: CollectorComponent, canActivate: [authGuard , collectorGuard]}
-
+  { path: 'register', component: RegisterComponent, canActivate: [noAuthGuard] }, 
+  { path: 'login', component: LoginComponent, canActivate: [noAuthGuard] }, 
+  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+  { path: 'request-form', component: RequestFormComponent, canActivate: [authGuard]},
+  { path: 'request-list', component: RequestListComponent, canActivate: [authGuard]},
+  { path: 'request-update/:id', component: RequestUpdateComponent, canActivate: [authGuard] },
+  { path: 'collector-requests', component: CollectorRequestListComponent ,canActivate: [authGuard, CollectorGuard]},
+  { path: 'home', component: HomeComponent },
+  { path: '**', redirectTo: 'login' }
 ];

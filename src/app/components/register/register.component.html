@@ -1,0 +1,90 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-900 text-gray-200 p-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl w-full bg-gray-800 p-8 rounded-lg shadow-lg">
+    <div class="p-6">
+      <h2 class="text-3xl font-bold mb-4 text-green-400">Rejoignez RecycleHub</h2>
+      <p class="mb-4">Créez votre compte et commencez à contribuer à un avenir plus vert.</p>
+      <p class="text-gray-400 text-sm italic">Faites partie d'une communauté engagée pour la planète.</p>
+      <div class="mt-6">
+        <img src="../../../../assets/images/recyclage.jpg" alt="Recycle" class="w-full h-96 rounded-md shadow-lg">
+      </div>
+    </div>
+
+    <div class="p-6 bg-gray-700 rounded-lg">
+      <h2 class="text-2xl font-bold mb-6 text-center">Inscription</h2>
+      
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        
+        <div *ngIf="currentStep === 1">
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-300">Nom complet</label>
+            <input id="name" type="text" formControlName="name"
+              class="w-full mt-2 p-3 rounded-md bg-gray-800 border border-gray-600 text-white focus:ring-2 focus:ring-green-400" />
+            <p *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="text-red-500 text-sm">Nom requis</p>
+          </div>
+
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-300">Email</label>
+            <input id="email" type="email" formControlName="email"
+              class="w-full mt-2 p-3 rounded-md bg-gray-800 border border-gray-600 text-white focus:ring-2 focus:ring-green-400" />
+            <p *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-red-500 text-sm">Email invalide</p>
+          </div>
+
+          <div>
+            <label for="phone" class="block text-sm font-medium text-gray-300">Numéro de téléphone</label>
+            <input id="phone" type="tel" formControlName="phone"
+              class="w-full mt-2 p-3 rounded-md bg-gray-800 border border-gray-600 text-white focus:ring-2 focus:ring-green-400" />
+            <p *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched" class="text-red-500 text-sm">Numéro invalide</p>
+          </div>
+
+          <div>
+            <label for="password" class="block text-sm font-medium text-gray-300">Mot de passe</label>
+            <input id="password" type="password" formControlName="password"
+              class="w-full mt-2 p-3 rounded-md bg-gray-800 border border-gray-600 text-white focus:ring-2 focus:ring-green-400" />
+            <p *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-red-500 text-sm">Mot de passe requis</p>
+          </div>
+
+          <div class="flex justify-between mt-4">
+            <button type="button" (click)="nextStep()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md transition duration-300">
+              Suivant
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="currentStep === 2">
+          <div>
+            <label for="address" class="block text-sm font-medium text-gray-300">Adresse</label>
+            <input id="address" type="text" formControlName="address"
+              class="w-full mt-2 p-3 rounded-md bg-gray-800 border border-gray-600 text-white focus:ring-2 focus:ring-green-400" />
+            <p *ngIf="registerForm.get('address')?.invalid && registerForm.get('address')?.touched" class="text-red-500 text-sm">Adresse requise</p>
+          </div>
+
+          <div>
+            <label for="dateOfBirth" class="block text-sm font-medium text-gray-300">Date de naissance</label>
+            <input id="dateOfBirth" type="date" formControlName="dateOfBirth"
+              class="w-full mt-2 p-3 rounded-md bg-gray-800 border border-gray-600 text-white focus:ring-2 focus:ring-green-400" />
+            <p *ngIf="registerForm.get('dateOfBirth')?.errors?.['underAge']" class="text-red-500 text-sm">Vous devez avoir au moins 18 ans.</p>
+          </div>
+
+          <div>
+            <label for="profilePhoto" class="block text-sm font-medium text-gray-300">Photo de profil (Optionnel)</label>
+            <input type="file" (change)="onFileChange($event)"
+              class="w-full mt-2 p-3 rounded-md bg-gray-800 border border-gray-600 text-white focus:ring-2 focus:ring-green-400" />
+          </div>
+
+          <div class="flex justify-between mt-4">
+            <button type="button" (click)="prevStep()" class="py-2 px-4 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition duration-300">
+              Retour
+            </button>
+            <button type="submit" [disabled]="registerForm.invalid"
+              class="py-2 px-4 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300">
+              Créer un compte
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+      <p class="mt-4 text-center text-gray-400 text-sm">Vous avez déjà un compte ? <button (click)="navigateToLogin()" class="text-green-400 hover:underline">Connectez-vous ici</button></p>
+    </div>
+  </div>
+</div>

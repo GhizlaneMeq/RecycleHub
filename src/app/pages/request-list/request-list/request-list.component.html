@@ -1,0 +1,111 @@
+<div class="min-h-screen pt-24 bg-gradient-to-br from-gray-900 to-black text-gray-300 py-8 px-4">
+  <div class="max-w-4xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-bold text-gray-200">My Collection Requests</h2>
+      <a [routerLink]="['/request-form']"
+         class="inline-flex items-center px-4 py-2 bg-green-400 text-gray-900 rounded-lg hover:bg-green-500 transition-all duration-300">
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+        </svg>
+        New Request
+      </a>
+    </div>
+
+    <div class="space-y-4">
+      <div *ngFor="let request of requests$ | async"
+           class="bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+        <div class="p-4">
+          <div class="flex justify-between items-start mb-3">
+            <div class="flex items-center space-x-3">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                    [ngClass]="{
+                      'bg-yellow-500 text-gray-900': request.status === 'Pending',
+                      'bg-blue-500 text-gray-900': request.status === 'Occupied',
+                      'bg-indigo-500 text-gray-900': request.status === 'InProgress',
+                      'bg-green-500 text-gray-900': request.status === 'Validated',
+                      'bg-red-500 text-gray-900': request.status === 'Rejected'
+                    }">
+                {{ request.status }}
+              </span>
+              <span class="text-sm text-gray-400">Request #{{ request.id }}</span>
+            </div>
+            <div class="flex space-x-2">
+              <a *ngIf="request.status === 'Pending'"
+                 [routerLink]="['/request-update', request.id]"
+                 class="text-green-400 hover:text-green-500">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                </svg>
+              </a>
+              <button *ngIf="request.status === 'Pending'"
+                      (click)="deleteRequest(request.id)"
+                      class="text-red-400 hover:text-red-500">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <div class="flex items-center text-gray-400 mb-1">
+                <svg class="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                </svg>
+                <span class="font-medium">Waste Items:</span>
+              </div>
+              <ul class="space-y-1 ml-5 text-gray-300">
+                <li *ngFor="let waste of request.wastes">
+                  {{ waste.type }} - {{ waste.weight }} kg
+                </li>
+              </ul>
+            </div>
+
+            <div class="space-y-2">
+              <div class="flex">
+                <div class="flex items-center text-gray-400 mb-1">
+                  <svg class="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                  </svg>
+                  <span class="font-medium">Address:</span>
+                </div>
+                <p class="text-gray-300 ml-5">{{ request.address }}</p>
+              </div>
+              <div class="flex">
+                <div class="flex items-center text-gray-400 mb-1">
+                  <svg class="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                  <span class="font-medium">Pickup:</span>
+                </div>
+                <p class="text-gray-300 ml-5">{{ request.date }} at {{ request.time }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="request.notes" class="mt-3 text-sm">
+            <div class="flex items-center text-gray-400 mb-1">
+              <svg class="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+              <span class="font-medium">Notes:</span>
+            </div>
+            <p class="text-gray-300 ml-5">{{ request.notes }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="(requests$ | async)?.length === 0" class="text-center py-8">
+      <div class="bg-gray-800 rounded-lg shadow-md p-6">
+        <h3 class="text-gray-200 font-medium mb-1">No Requests Yet</h3>
+        <p class="text-gray-400 text-sm mb-4">Create your first recycling request</p>
+        <a [routerLink]="['/request-form']"
+           class="inline-flex items-center px-3 py-2 text-sm bg-green-400 text-gray-900 rounded-lg hover:bg-green-500 transition-all duration-300">
+          Create Request
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

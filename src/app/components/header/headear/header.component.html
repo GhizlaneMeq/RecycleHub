@@ -1,0 +1,38 @@
+<header class="fixed w-full bg-white/95 backdrop-blur-sm z-50 border-b border-gray-100">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a routerLink="/" class="flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          <span class="text-xl font-bold text-gray-800">RecycleHub</span>
+        </a>
+  
+        <!-- Navigation -->
+        <nav class="hidden md:flex items-center space-x-8">
+          <a routerLink="/home" class="text-gray-600 hover:text-green-600 transition-colors">Home</a>
+          <a routerLink="/request-list" class="text-gray-600 hover:text-green-600 transition-colors">Requests</a>
+          <a routerLink="/collector-requests" class="text-gray-600 hover:text-green-600 transition-colors">Collectors</a>
+          <a routerLink="/profile" class="text-gray-600 hover:text-green-600 transition-colors">Profile</a>
+        </nav>
+  
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden p-2 rounded-lg hover:bg-gray-100" (click)="toggleMobileMenu()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  
+    <!-- Mobile Menu -->
+    <div class="md:hidden" [class.hidden]="!isMobileMenuOpen">
+      <div class="px-2 pt-2 pb-3 space-y-1">
+        <a routerLink="/home" class="block px-3 py-2 rounded-md text-gray-600 hover:text-green-600 hover:bg-gray-50">Home</a>
+        <a routerLink="/request-list" class="block px-3 py-2 rounded-md text-gray-600 hover:text-green-600 hover:bg-gray-50">Requests</a>
+        <a routerLink="/collector-requests" class="block px-3 py-2 rounded-md text-gray-600 hover:text-green-600 hover:bg-gray-50">Collectors</a>
+        <a routerLink="/profile" class="block px-3 py-2 rounded-md text-gray-600 hover:text-green-600 hover:bg-gray-50">Profile</a>
+      </div>
+    </div>
+  </header>

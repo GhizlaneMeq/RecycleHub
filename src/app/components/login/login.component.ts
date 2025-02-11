@@ -1,57 +1,45 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
-import { Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import { Router } from '@angular/router';
+import {CommonModule} from "@angular/common";
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
+  standalone:true ,
+  imports:[ReactiveFormsModule , CommonModule],
   templateUrl: './login.component.html',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule ,RouterModule],
-  styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
-  loginForm: FormGroup = new FormGroup({});
+export class LoginComponent {
+  loginForm: FormGroup;
   errorMessage: string = '';
+  isLoading: boolean = false;
 
   constructor(
+    private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
-  ) { }
-
-  ngOnInit() {
-    this.loginForm = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, Validators.minLength(6)])
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
     });
   }
 
-
-onLogin() {
-  if (this.loginForm.invalid) {
-    this.errorMessage = 'Please correct the errors in the form.';
-    return;
+  onSubmit(): void {
+    if (this.loginForm.valid) {
+      this.isLoading = true;
+      const { email, password } = this.loginForm.value;
+      if (!this.authService.login(email, password)) {
+        this.errorMessage = 'Invalid credentials';
+      }
+      this.isLoading = false;
+    } else {
+      this.loginForm.markAllAsTouched();
+    }
   }
 
-  const { email, password } = this.loginForm.value;
-
-  this.authService.login(email, password).subscribe({
-    next: (user) => {
-      console.log('Login successful', user);
-      this.router.navigate(['/dashboard']);
-      this.errorMessage = '';
-    },
-    error: (error) => {
-      if (error.message === 'User not found') {
-        this.errorMessage = 'No account found with this email.';
-      } else if (error.message === 'Invalid password') {
-        this.errorMessage = 'Incorrect password. Please try again.';
-      } else {
-        this.errorMessage = 'Login failed. Please try again.';
-      }
-      console.error('Login error', error);
-    }
-  });
-}
+  navigateToRegister() {
+    this.router.navigate(['/register']);
+  }
 }

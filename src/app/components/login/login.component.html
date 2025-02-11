@@ -1,36 +1,61 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-900 text-gray-200 p-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl w-full bg-gray-800 p-8 rounded-lg shadow-lg">
+    
+    <div class="p-6">
+      <h2 class="text-3xl font-bold mb-4 text-green-400">Welcome to RecycleHub</h2>
+      <p class="mb-4">
+        Sign in to access your account and enjoy a personalized experience.
+      </p>
+      <p class="text-gray-400 text-sm italic">
+        Manage your profile, track your activities, and explore all our features.
+      </p>
 
-<div class="flex items-center justify-center min-h-screen bg-gray-100">
-  <div class="px-8 py-6 mt-4 text-left bg-white shadow-lg w-96">
-    <h3 class="text-2xl font-bold text-center">Login to your account</h3>
-    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-      <div class="mt-4">
+      <div class="mt-6">
+        <img src="assets/images/recyclage.jpg" alt="Recyclage" class="w-full h-96 rounded-md shadow-lg">
+      </div>
+    </div>
+
+    <div class="p-6 bg-gray-700 rounded-lg">
+      <h2 class="text-2xl font-bold mb-6 text-center">Sign In</h2>
+      
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        
         <div>
-          <label class="block" for="email">Email</label>
-          <input type="email" id="email" placeholder="Email" class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" formControlName="email">
-          <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)" class="text-red-500">
-            <div *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</div>
-            <div *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email.</div>
+          <label for="email" class="block text-sm font-medium text-gray-300">Email</label>
+          <input id="email" type="email" formControlName="email"
+            class="w-full mt-2 p-3 rounded-md bg-gray-800 border border-gray-600 text-white focus:ring-2 focus:ring-green-400" 
+            placeholder="your@email.com"/>
+          <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-red-500 text-sm mt-1">
+            Invalid email
           </div>
         </div>
-        <div class="mt-4">
-          <label class="block">Password</label>
-          <input type="password" placeholder="Password" class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" formControlName="password">
-          <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" class="text-red-500">
-            <div *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</div>
-            <div *ngIf="loginForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters long.</div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-300">Password</label>
+          <input id="password" type="password" formControlName="password"
+            class="w-full mt-2 p-3 rounded-md bg-gray-800 border border-gray-600 text-white focus:ring-2 focus:ring-green-400"/>
+          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-red-500 text-sm mt-1">
+            Password is required
           </div>
         </div>
-        <div *ngIf="errorMessage" class="text-red-500 mt-2">
+
+        <div *ngIf="errorMessage" class="text-red-500 text-sm mt-4 text-center">
           {{ errorMessage }}
         </div>
-        <div class="flex items-baseline justify-between">
-          <button class="px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900" type="submit" [disabled]="loginForm.invalid">Login</button>
-          <a href="#" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
+
+        <div class="flex justify-center mt-6">
+          <button type="submit"
+            class="bg-green-500 hover:bg-green-600 text-white py-2 px-6 rounded-md transition duration-300 disabled:opacity-50"
+            [disabled]="loginForm.invalid">
+            Sign In
+          </button>
         </div>
-        <div class="mt-6 text-center">
-          <a [routerLink]="['/signup']" routerLinkActive="router-link-active"  href="#" class="text-sm text-blue-600 hover:underline">Don't have an account? Sign up</a>
-        </div>
-      </div>
-    </form>
+      </form>
+
+      <p class="mt-4 text-center text-gray-400 text-sm">
+        Don't have an account? <button (click)="navigateToRegister()" class="text-green-400 hover:underline">Register here</button>
+      </p>
+    </div>
+
   </div>
 </div>
